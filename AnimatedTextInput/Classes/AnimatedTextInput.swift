@@ -53,16 +53,16 @@ open class AnimatedTextInput: UIControl {
         }
     }
 
-    open var placeHolderText = "Test" {
+    open var placeholder = "Test" {
         didSet {
-            placeholderLayer.string = placeHolderText
-            textInput.view.accessibilityLabel = placeHolderText
+            placeholderLayer.string = placeholder
+            textInput.view.accessibilityLabel = placeholder
         }
     }
     
-    // Some letters like 'g' or 'á' were not rendered properly, the frame need to be about 20% higher than the font size
+    // Some letters like 'g' or 'á' or some charecter in some language were not rendered properly, the frame need to be about 45% higher than the font size
 
-    open var frameHeightCorrectionFactor : Double = 1.2 {
+    open var frameHeightCorrectionFactor : Double = 1.45 {
         didSet {
             layoutPlaceholderLayer()
         }
@@ -296,7 +296,7 @@ open class AnimatedTextInput: UIControl {
 
     fileprivate func addPlaceHolder() {
         placeholderLayer.masksToBounds = false
-        placeholderLayer.string = placeHolderText
+        placeholderLayer.string = placeholder
         placeholderLayer.foregroundColor = style.placeholderInactiveColor.cgColor
         placeholderLayer.fontSize = style.textInputFont.pointSize
         placeholderLayer.font = style.textInputFont
@@ -336,7 +336,7 @@ open class AnimatedTextInput: UIControl {
         isPlaceholderAsHint = true
         configurePlaceholderWith(fontSize: style.placeholderMinFontSize,
                                  foregroundColor: style.activeColor.cgColor,
-                                 text: placeHolderText)
+                                 text: placeholder)
         lineView.fillLine(with: style.lineActiveColor)
     }
 
@@ -344,7 +344,7 @@ open class AnimatedTextInput: UIControl {
         isPlaceholderAsHint = true
         configurePlaceholderWith(fontSize: style.placeholderMinFontSize,
                                  foregroundColor: style.inactiveColor.cgColor,
-                                 text: placeHolderText)
+                                 text: placeholder)
         lineView.animateToInitialState()
     }
 
@@ -352,7 +352,7 @@ open class AnimatedTextInput: UIControl {
         isPlaceholderAsHint = false
         configurePlaceholderWith(fontSize: style.textInputFont.pointSize,
                                  foregroundColor: style.placeholderInactiveColor.cgColor,
-                                 text: placeHolderText)
+                                 text: placeholder)
         lineView.animateToInitialState()
     }
 
@@ -453,10 +453,10 @@ open class AnimatedTextInput: UIControl {
         return textInput.view.canBecomeFirstResponder
     }
 
-    open func show(error errorMessage: String, placeholderText: String? = nil) {
+    open func show(error errorMessage: String, placeholder: String? = nil) {
         placeholderErrorText = errorMessage
         if let textInput = textInput as? TextInputError {
-            textInput.configureErrorState(with: placeholderText)
+            textInput.configureErrorState(with: placeholder)
         }
         animatePlaceholder(to: configurePlaceholderAsErrorHint)
     }
